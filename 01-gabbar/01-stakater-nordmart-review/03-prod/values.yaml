@@ -4,4 +4,4 @@ stakater-nordmart-review:
       image:
         repository: https://nexus-docker-stakater-nexus.apps.preprod.jlvwjls8.kubeapp.cloud
         tag: 0.1.0
-      imagePullSecrets: nexus-docker-config-forked-preprod
+      imagePullSecrets: nexus-docker-config-forked
