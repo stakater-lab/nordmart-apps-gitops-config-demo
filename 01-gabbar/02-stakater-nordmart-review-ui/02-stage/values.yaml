@@ -5,10 +5,10 @@ stakater-nordmart-review-ui:
           router: default
     deployment:
       image:
-        repository: nexus-docker-stakater-nexus.apps.devtest.vxdqgl7u.kubeapp.cloud/stakater-nordmart-review-ui
-        tag: 1.0.2
-      imagePullSecrets: nexus-docker-config-forked-devtest
+        repository: https://nexus-docker-stakater-nexus.apps.preprod.jlvwjls8.kubeapp.cloud
+        tag: 0.1.0
+      imagePullSecrets: nexus-docker-config-forked-preprod
       env:
         REVIEW_API:
           # This is hardcoded!
-          value: "https://review-gabbar-stage.apps.stage.2cc6dtsv.kubeapp.cloud/"
+          value: "https://review-gabbar-stage.apps.preprod.jlvwjls8.kubeapp.cloud/"
