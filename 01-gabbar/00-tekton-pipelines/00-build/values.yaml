@@ -149,7 +149,7 @@ stakater-tekton-chart:
           - name: HELM_REGISTRY
             value: $(params.helm_registry)
         runAfter:
-          - stakater-helm-push-v2
+          - stakater-helm-push-v1
         taskRef:
           kind: ClusterTask
           task: stakater-github-update-cd-repo-1.0.8
