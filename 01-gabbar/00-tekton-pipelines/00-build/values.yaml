@@ -124,7 +124,38 @@ stakater-tekton-chart:
         - rox-image-check
         - stakater-checkov-scan-v1
       - defaultTaskName: stakater-helm-push-v1
-      - defaultTaskName: stakater-update-cd-repo-v3
+      - name: stakater-github-update-cd-repo
+        params:
+          - name: CD_REPO_URL
+            value: 'https://github.com/stakater-lab/nordmart-apps-gitops-config-demo.git'
+          - name: PR_NUMBER
+            value: $(params.prnumber)
+          - name: IMAGE_TAG
+            value: $(tasks.stakater-create-git-tag-v2.results.GIT_TAG)
+          - name: IMAGE_NAME
+            value: $(params.image_registry_url)
+          - name: ENVIRONMENT
+            value: $(params.environment)
+          - name: REPO_PATH
+            value: $(params.repoPath)
+          - name: GIT_REVISION
+            value: $(params.gitrevision)
+          - name: CLUSTER_NAME
+            value: $(params.clusterName)
+          - name: TEAM
+            value: $(params.team)
+          - name: NAMESPACE
+            value: $(params.namespace)
+          - name: HELM_REGISTRY
+            value: $(params.helm_registry)
+        runAfter:
+          - stakater-helm-push-v2
+        taskRef:
+          kind: ClusterTask
+          task: stakater-github-update-cd-repo-1.0.8
+        workspaces:
+          - name: source
+            workspace: source
       - defaultTaskName: stakater-push-main-tag-v1
       - name: stakater-validate-environment
         params:
