@@ -131,7 +131,7 @@ stakater-tekton-chart:
           - name: PR_NUMBER
             value: $(params.prnumber)
           - name: IMAGE_TAG
-            value: $(tasks.stakater-create-git-tag-v2.results.GIT_TAG)
+            value: $(tasks.stakater-create-git-tag-v1.results.GIT_TAG)
           - name: IMAGE_NAME
             value: $(params.image_registry_url)
           - name: ENVIRONMENT
