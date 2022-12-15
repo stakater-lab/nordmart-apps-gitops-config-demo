@@ -1,3 +1,5 @@
+
+
 stakater-tekton-chart:
   name: stakater-main-pr-v2
   workspaces:
@@ -31,17 +33,37 @@ stakater-tekton-chart:
           value: pending
       - defaultTaskName: git-clone
       - defaultTaskName: stakater-create-git-tag-v1
-      - defaultTaskName: stakater-create-environment-v2
+      - name: stakater-create-environment
         params:
-        - name: createOnCluster
+        - name: CREATE_ON_CLUSTER
           value: "true"
+        - name: REPO_NAME
+          value: $(params.repoName)
+        - name: PR_NUMBER
+          value: $(params.prnumber)
+        - name: GIT_URL
+          value: $(params.gitrepositoryurl)
+        - name: GIT_BRANCH
+          value: $(params.gitbranch)
+        - name: IMAGE_TAG
+          value: $(tasks.stakater-create-git-tag-v1.results.GIT_TAG)
+        - name: IMAGE_REPO
+          value: $(params.image_registry_url)
+        - name: PULL_REQUEST_COMMITS_API
+          value: $(params.pull_request_commits_api)
+        taskRef:
+          kind: ClusterTask
+          task: stakater-create-environment-1.0.3
+        workspaces:
+          - name: output
+            workspace: source
       - defaultTaskName: stakater-code-linting-v1
       - defaultTaskName: stakater-kube-linting-v1
         params:
         - name: namespace
           value: $(context.pipelineRun.namespace)
         runAfter:
-        - stakater-create-environment-v2
+        - stakater-create-environment
       - defaultTaskName: stakater-unit-test-v1
         runAfter:
         - stakater-kube-linting-v1
@@ -110,9 +132,11 @@ stakater-tekton-chart:
         params:
           - name: TIMEOUT
             value: "300"
+          - name: PR_NUMBER
+            value: $(params.prnumber)
         taskRef:
           kind: ClusterTask
-          task: stakater-validate-environment-1.0.1
+          task: stakater-validate-environment-1.0.2
         workspaces:
           - name: source
             workspace: source
