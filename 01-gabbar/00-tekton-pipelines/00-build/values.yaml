@@ -12,7 +12,7 @@ stakater-tekton-chart:
           kind: ClusterTask
         name: stakater-remove-environment-v2
         when:
-        - input: $(tasks.stakater-update-cd-repo.status)
+        - input: $(tasks.stakater-github-update-cd-repo.status)
           operator: notin
           values: ["Succeeded"]
         workspaces:
