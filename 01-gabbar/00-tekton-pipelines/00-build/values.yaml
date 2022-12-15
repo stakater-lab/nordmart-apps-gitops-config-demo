@@ -7,8 +7,20 @@ stakater-tekton-chart:
         resourcesRequestsStorage: 1Gi
   pipelines:
     finally:
-      - defaultTaskName: stakater-remove-environment-v1
-        name: remove-environment
+      - taskRef:
+          task: stakater-remove-environment-v1
+          kind: ClusterTask
+        name: stakater-remove-environment-v2
+        when:
+        - input: $(tasks.stakater-update-cd-repo.status)
+          operator: notin
+          values: ["Succeeded"]
+        workspaces:
+        - name: output
+          workspace: source
+        params:
+        - name: prNumber
+          value: $(params.prnumber)
       - defaultTaskName: stakater-set-commit-status-v1
         name: set-commit-status-task-result
       - taskRef:
